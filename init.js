@@ -127,7 +127,8 @@ function productFromRCJson(obj, weight, category)
     "stock_preorder" : false,
     "stock_backorder" : false,
     "category_id" : category,
-    "category_ids" : []
+    "category_ids" : [],
+    "packaging": weight
   };
 };
 
