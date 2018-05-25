@@ -1,6 +1,13 @@
 node_modules/
+<<<<<<< HEAD
 imgs/images(988).png
 imgs/
 dls/
 category/images(78).png
+=======
+imgs/
+dog/
+dls/
+cat/
+>>>>>>> first commit
 category/
