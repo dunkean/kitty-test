@@ -15,9 +15,9 @@ var download = function(uri, filename, callback){
 };
 
 for (var key in json) {
-    var img_url = json[key].img_url;
+    var img_url = json[key].thumbnail_url;
     var img_name = path.basename(url.parse(img_url).pathname);
-    download(img_url, 'dls/'+ img_name, function(){
+    download(img_url, 'thumb/'+ img_name, function(){
       console.log(img_name + ' done');
     });
 }

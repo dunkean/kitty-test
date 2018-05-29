@@ -16,10 +16,12 @@ async function initCategoryDatabase() {
   id = await api.createCategory("Chien");
   subId = await api.createCategory("Nourriture", id);
   await api.createCategory("Croquettes", subId);
-  await api.createCategory("Pâtées", subId);
-  await api.createCategory("Friandises", subId);
-  subId = await api.createCategory("Soins", id);
-  await api.createCategory("Anti-parasites", subId);
+  await api.createCategory("Boites", subId);
+  await api.createCategory("Autre", subId);
+  subId = await api.createCategory("Véto", id);
+  await api.createCategory("En bonne santé", subId);
+  await api.createCategory("En cours de traitement", subId);
+  /*await api.createCategory("Anti-parasites", subId);
   await api.createCategory("Vitamines", subId);
   await api.createCategory("Cosmétiques", id);
   subId = await api.createCategory("Nourriture Véto", subId);
@@ -35,9 +37,17 @@ async function initCategoryDatabase() {
   await api.createCategory("Mobilité articulaire", subId);
   await api.createCategory("Stress et Anxiété", subId);
   await api.createCategory("Troubles digestifs", subId);
-  await api.createCategory("Troubles hépatiques", subId);
+  await api.createCategory("Troubles hépatiques", subId);*/
 
   id = await api.createCategory("Chat");
+  subId = await api.createCategory("Nourriture", id);
+  await api.createCategory("Croquettes", subId);
+  await api.createCategory("Boites", subId);
+  await api.createCategory("Autre", subId);
+  subId = await api.createCategory("Véto", id);
+  await api.createCategory("En bonne santé", subId);
+  await api.createCategory("En cours de traitement", subId);
+  /*
   subId = await api.createCategory("Nourriture", id);
   await api.createCategory("Croquettes", subId);
   await api.createCategory("Pâtées", subId);
@@ -46,8 +56,8 @@ async function initCategoryDatabase() {
   await api.createCategory("Nourriture Véto", subId);
   await api.createCategory("Anti-parasites", subId);
   await api.createCategory("Vitamines", subId);
-  await api.createCategory("Cosmétiques", id);
-
+  await api.createCategory("Cosmétiques", id);*/
+/*
   id = await api.createCategory("Rongeurs & Co");
   await api.createCategory("Lapins", id);
   await api.createCategory("Furets", id);
@@ -62,7 +72,7 @@ async function initCategoryDatabase() {
 
   id = await api.createCategory("Poissons");
   await api.createCategory("Nourriture", id);
-  await api.createCategory("Soins", id);
+  await api.createCategory("Soins", id);*/
 }
 
 
@@ -93,17 +103,33 @@ var day = d.getDate();
 var toDate = new Date(year + 2, month, day);
 var fromDate = d;
 
+var json = require('./RoyalCanin.json');
+var jsonAttr = require('./RC_categories.json');
+
+function getAttributes(obj) {
+  var attr = [];
+  for(var attrName in obj.category_codes) {
+    for(var catName in jsonAttr.attributes) {
+      if(jsonAttr.attributes[catName][obj.category_codes[attrName]] != undefined)
+        attr.push({name:catName, value:jsonAttr.attributes[catName][obj.category_codes[attrName]]});
+    }
+  }
+  return attr;
+}
+
 function productFromRCJson(obj, weight, category)
 {
+  var attrib = getAttributes(obj);
+  console.log(attrib);
   var txt = obj.small_desc + '<p>' + JSON.stringify(obj.composition) + '<p>' + JSON.stringify(obj.atouts) + '<p>' + JSON.stringify(obj.conseils);
   txt = txt.replace(/\{|\}|_|\[|\|"text"|"]/g,'');
   return {
-    "name" : obj.name + ' ' + weight,
+    "name" : obj.name,
     "description" : obj.small_desc + '<p>' + JSON.stringify(obj.composition) + '<p>' + JSON.stringify(obj.atouts),
     "meta_description" : obj.small_desc,
     "meta_title" :  obj.name,
     "tags" : [obj.type],
-    "attributes" : [],
+    "attributes" : attrib,
     "enabled" : true,
     "discontinued" : false,
     "slug" : slug(obj.name),
@@ -141,8 +167,6 @@ function uploadImageToProduct(id, obj) {
 	.catch(err => {console.log(err)});
 };
 
-var json = require('./RoyalCanin.json');
-
 async function initRCProducts() {
   for (var key in json) {
     var obj = json[key];
@@ -151,32 +175,41 @@ async function initRCProducts() {
       var weight = obj.conditionnement[i];
       var product = productFromRCJson(obj, weight, categoryId);
       var res = await cez.products.create(product);
-      console.log(res.json.id);
+      //console.log(res.json.id);
       uploadImageToProduct(res.json.id, obj);
     }
   }
 }
 
-init();
 
+async function logAttributes() {
+  var cat = [];
+  for (var key in json) {
+    var obj = json[key];
+    for(var i in obj.category_codes) {
+      var val = obj.category_codes[i];
+      if(!cat.includes(val))
+        cat.push(val);
+    }
+  }
+  cat.sort();
+  fs.writeFile('./RC_categories_raw.json', JSON.stringify(cat, null, "  "), 'utf8', function(err){
+      console.log(err);
+  });
+}
+ 
+function count() {
+   var count=0;
+   for(var prop in json) {
+      if (json.hasOwnProperty(prop)) {
+         count+=json[prop].conditionnement.length;
+         if(json[prop].conditionnement.length == 0) 
+            console.log(json[prop].name);
+      }
+   }
+   return count;
+}
 
-
-/*
-
-Marque : Royal canin / Proplan /hill’s/ vibac/ Spécific
-
-
-Affection du bas appareil urinaire
-Convalescence et soins intensifs
-Dermatose et dépilation
-Diabète
-Gestion du poids
-Hygiène bucco-dentaire
-Insuffisance cardiaque
-Insuffisances rénales
-Intolérance alimentaire
-Mobilité articulaire
-Stress et Anxiété
-Troubles digestifs
-Troubles hépatiques
-*/
+console.log(count());
+//init();
+//logAttributes();

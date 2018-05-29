@@ -1,0 +1,57 @@
+{
+  "attributes": {
+    "Age": {
+        "age-chat-chat-adulte-de-1-a-7-ans": "1 à 7 ans",
+        "age-chat-chat-mature-de-plus-de-7-ans": "+ de 7 ans",
+        "age-chat-chaton-de-12-mois": "Chaton",
+        "age-chien-adulte": "Adulte",
+        "age-chien-croissance":"En croissance",
+        "age-chien-maturite": "Maturité"    
+    },
+    "Pathologie": {
+        "pathologie-chat-affection-du-bas-appareil-urinaire":"Affection du bas appareil urinaire",
+        "pathologie-chat-convalescence-et-soins-intensifs":"Convalescence et soins intensifs",
+        "pathologie-chat-insuffisances-renales":"Insuffisances renales",
+        "pathologie-chat-mobilite-articulaire":"Mobilité articulaire",
+        "pathologie-chat-troubles-digestifs":"Troubles digestifs",
+        "pathologie-chien-affection-du-bas-appareil-urinaire":"Affection du bas appareil urinaire",
+        "pathologie-chien-convalescence-et-soins-intensifs":"Convalescence et soins intensifs",
+        "pathologie-chien-dermatose-et-depilation":"Dermatose et dépilation",
+        "pathologie-chien-diabete":"Diabète",
+        "pathologie-chien-hygiene-bucco-dentaire":"Hygiène bucco-dentaire",
+        "pathologie-chien-insuffisance-cardiaque":"Insuffisance cardiaque",
+        "pathologie-chien-insuffisances-renales":"Insuffisances rénales",
+        "pathologie-chien-intolerance-alimentaire":"Intolérance alimentaire",
+        "pathologie-chien-mobilite-articulaire":"Mobilité articulaire",
+        "pathologie-chien-stress-et-anxiete":"Stress et anxiété",
+        "pathologie-chien-troubles-digestifs":"Troubles digestifs",
+        "pathologie-chien-troubles-hepatiques":"Troubles hépatiques",
+        "soins-chat-boules-de-poils":"Boules de poils",
+        "soins-chat-peau-et-poil": "Peau et poil",
+        "soins-chat-sensibilite-digestive": "Sensibilité digestive",
+        "soins-chat-tendance-a-lembonpoint": "Tendance à l'embonpoint",
+        "soins-chat-urinaire": "Problèmes urinaires"           
+    },
+    "Taille": {
+        "taille-chien-giant": "Très grand",
+        "taille-chien-maxi": "Grand",
+        "taille-chien-medium": "Moyen",
+        "taille-chien-mini": "Petit",
+        "taille-chien-x-small": "Mini"       
+    },
+    "Habitudes": {
+        "type-chat-chat-dexterieur":"Chat d&apos;extérieur",
+        "type-chat-chat-difficile": "Chat difficile",
+        "type-chat-chat-dinterieur": "Chat d&apos;intérieur",
+        "type-chat-chat-sterilise": "Chat stérilisé",
+        "type-chat-maintenance": "Quotidien"
+    }
+  },
+  "category": {
+    "sante-en-bonne-sante": "En bonne santé"  ,
+    "sante-en-cours-de-traitement":"En cours de traitement",
+    "type-produit-boites":"Boites",
+    "type-produit-croquettes":"Croquettes",
+    "type-produit-other":"Autre"
+  }
+}
