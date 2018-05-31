@@ -197,13 +197,13 @@ async function logAttributes() {
       console.log(err);
   });
 }
- 
+
 function count() {
    var count=0;
    for(var prop in json) {
       if (json.hasOwnProperty(prop)) {
          count+=json[prop].conditionnement.length;
-         if(json[prop].conditionnement.length == 0) 
+         if(json[prop].conditionnement.length == 0)
             console.log(json[prop].name);
       }
    }
@@ -211,5 +211,5 @@ function count() {
 }
 
 console.log(count());
-//init();
+init();
 //logAttributes();

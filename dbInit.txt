@@ -6,6 +6,8 @@ db.createCollection("productCategories",{});
 db.createCollection("products",{});
 db.createCollection("customers",{});
 db.createCollection("orders",{});
+db.createCollection("stores",{});
+db.createCollection("brands",{});
 
 db.pages.insertMany([
   {slug: '', meta_title: 'Home', enabled: true, is_system: true},
