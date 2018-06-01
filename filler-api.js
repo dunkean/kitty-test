@@ -98,8 +98,9 @@ function setParentCategory(childId, parentId) {
 /********************* BRANDS ******************************/
 
 exports.deleteAllBrands = async function() {
-  api.productBrands.list({}).then((result) => {
+  api.brands.list({}).then((result) => {
       result.json.forEach(e=>{
+        console.log(e.id);
         api.brands.delete(e.id);
       });
   });
@@ -158,7 +159,7 @@ async function getAllBrands() {
 
 /******************** STORES ***************************/
 exports.deleteAllStores = async function() {
-  api.productStores.list({}).then((result) => {
+  api.stores.list({}).then((result) => {
       result.json.forEach(e=>{
         api.stores.delete(e.id);
       });

@@ -77,13 +77,6 @@ async function initCategoryDatabase() {
 
 
 /****** CALLS *********/
-async function init() {
-  await api.deleteAllCategories();
-  await initCategoryDatabase();
-  await api.deleteAllProducts();
-  await initRCProducts();
-}
-
 function ID() {
   return Math.random().toString(36).substr(2, 9);
 };
@@ -171,12 +164,18 @@ async function initRCProducts() {
   for (var key in json) {
     var obj = json[key];
     var categoryId = await api.getCategory(obj.race);
-    for(var i in obj.conditionnement) {
-      var weight = obj.conditionnement[i];
+    if(obj.conditionnement.length == 0) {
+      var weight = "";
       var product = productFromRCJson(obj, weight, categoryId);
       var res = await cez.products.create(product);
-      //console.log(res.json.id);
       uploadImageToProduct(res.json.id, obj);
+    } else {
+      for(var i in obj.conditionnement) {
+        var weight = obj.conditionnement[i];
+        var product = productFromRCJson(obj, weight, categoryId);
+        var res = await cez.products.create(product);
+        uploadImageToProduct(res.json.id, obj);
+      }
     }
   }
 }
@@ -218,7 +217,9 @@ async function test_client() {
 }
 
 async function initBrands() {
-  await api.createBrand("Royal Canin");
+  await api.deleteAllBrands();
+  var t = await api.createBrand("Royal Canin");
+  console.log(JSON.stringify(t));
   await api.createBrand("Purina");
 }
 
@@ -227,10 +228,17 @@ async function initStores() {
   await api.createBrand("BlaBlaBla");
 }
 
-//test_client();
-//console.log(count());
-//init();
-//logAttributes();
+async function init() {
+  await api.deleteAllCategories();
+  await initCategoryDatabase();
+  await api.deleteAllProducts();
+  await initRCProducts();
+  await initBrands();
+  //initStores();
+  //logAttributes();
+  await test_client();
 
-initBrands();
-//initStores();
+  console.log(count());
+}
+test_client();
+//init();
