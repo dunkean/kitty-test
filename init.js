@@ -210,6 +210,27 @@ function count() {
    return count;
 }
 
-console.log(count());
-init();
+async function test_client() {
+  var categoryId = await api.getCategory("Chien");
+  console.log(categoryId);
+  var nbProducts = await cez.products.list();
+  console.log(nbProducts.json.data.length);
+}
+
+async function initBrands() {
+  await api.createBrand("Royal Canin");
+  await api.createBrand("Purina");
+}
+
+async function initStores() {
+  await api.createBrand("Amazon");
+  await api.createBrand("BlaBlaBla");
+}
+
+//test_client();
+//console.log(count());
+//init();
 //logAttributes();
+
+initBrands();
+//initStores();

@@ -95,6 +95,126 @@ function setParentCategory(childId, parentId) {
    api.productCategories.update(childId, {parent_id: parentId});
 }
 
+/********************* BRANDS ******************************/
+
+exports.deleteAllBrands = async function() {
+  api.productBrands.list({}).then((result) => {
+      result.json.forEach(e=>{
+        api.brands.delete(e.id);
+      });
+  });
+}
+
+exports.createBrand = async function(name, parentId) {
+  var brand = {
+    "name" : name,
+    "description" :  `Description of the brand ${name} which is a brand !`,
+    "meta_description" : `The brand ${name} deals with ${name} stuff.`,
+    "meta_title" : name,
+    "slug" : slug(name)
+  };
+  if(parentId != null)
+    brand.parent_id = parentId;
+  const x = await api.brands.create(brand);
+  return x.json.id;
+};
+
+
+
+function uploadImageToBrand(id, path) {
+	var form = new FormData();
+	form.append('file', fs.createReadStream(path));
+	api.brands.uploadImage(id, form)
+	.then((result) => {console.log(result);})
+	.catch(err => {console.log(err)});
+};
+
+exports.getBrand = async function(name) {
+  var id;
+  const x = await api.brands.list();
+  x.json.forEach(
+  	e=>{ if(e.name == name) id = e.id; }
+  );
+  return id;
+};
+
+async function getAllBrandsId() {
+  var l = [];
+  const x = await api.brands.list();
+  x.json.forEach(
+    e=>{ l.push(e.id); }
+  );
+  return l;
+};
+
+async function getAllBrands() {
+  var l = [];
+  const x = await api.brands.list();
+  x.json.forEach(
+    e=>{ l.push(e); }
+  );
+  return l;
+};
+
+/******************** STORES ***************************/
+exports.deleteAllStores = async function() {
+  api.productStores.list({}).then((result) => {
+      result.json.forEach(e=>{
+        api.stores.delete(e.id);
+      });
+  });
+}
+
+exports.createStore = async function(name, parentId) {
+  var store = {
+    "name" : name,
+    "description" :  `Description of the store ${name} which is a store !`,
+    "meta_description" : `The store ${name} deals with ${name} stuff.`,
+    "meta_title" : name,
+    "slug" : slug(name)
+  };
+  if(parentId != null)
+    store.parent_id = parentId;
+  const x = await api.stores.create(store);
+  return x.json.id;
+};
+
+
+
+function uploadImageToStore(id, path) {
+	var form = new FormData();
+	form.append('file', fs.createReadStream(path));
+	api.stores.uploadImage(id, form)
+	.then((result) => {console.log(result);})
+	.catch(err => {console.log(err)});
+};
+
+exports.getStore = async function(name) {
+  var id;
+  const x = await api.stores.list();
+  x.json.forEach(
+  	e=>{ if(e.name == name) id = e.id; }
+  );
+  return id;
+};
+
+async function getAllStoresId() {
+  var l = [];
+  const x = await api.stores.list();
+  x.json.forEach(
+    e=>{ l.push(e.id); }
+  );
+  return l;
+};
+
+async function getAllStores() {
+  var l = [];
+  const x = await api.stores.list();
+  x.json.forEach(
+    e=>{ l.push(e); }
+  );
+  return l;
+};
 
 /******************** PRODUCTS ***************************/
 // api.products.list({
