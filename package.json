@@ -52,6 +52,7 @@
       "version": "0.12.0"
     },
     "cezerin-client": "^0.31.1",
+    "cheerio-tableparser": "^1.0.1",
     "co": {
       "integrity": "sha1-bqa989hTrlTMuOR7+gvz+QMfsYQ=",
       "resolved": "https://registry.npmjs.org/co/-/co-4.6.0.tgz",
@@ -149,6 +150,7 @@
       "resolved": "https://registry.npmjs.org/har-validator/-/har-validator-5.0.3.tgz",
       "version": "5.0.3"
     },
+    "html2json": "^1.0.2",
     "http-signature": {
       "integrity": "sha1-muzZJRFHcvPZW2WmCruPfBj7rOE=",
       "requires": {
@@ -214,6 +216,7 @@
       "resolved": "https://registry.npmjs.org/mime-types/-/mime-types-2.1.18.tgz",
       "version": "2.1.18"
     },
+    "node-webcrawler": "^0.8.0",
     "oauth-sign": {
       "integrity": "sha1-Rqarfwrq2N6unsBWV4C31O/rnUM=",
       "resolved": "https://registry.npmjs.org/oauth-sign/-/oauth-sign-0.8.2.tgz",

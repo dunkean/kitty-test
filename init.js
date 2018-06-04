@@ -107,6 +107,7 @@ function getAttributes(obj) {
         attr.push({name:catName, value:jsonAttr.attributes[catName][obj.category_codes[attrName]]});
     }
   }
+  attr.push({name:"Marque", value:"Royal Canin"});
   return attr;
 }
 
@@ -164,6 +165,8 @@ async function initRCProducts() {
   for (var key in json) {
     var obj = json[key];
     var categoryId = await api.getCategory(obj.race);
+    var categoryId = await api.getCategory(obj.race);
+
     if(obj.conditionnement.length == 0) {
       var weight = "";
       var product = productFromRCJson(obj, weight, categoryId);
@@ -216,11 +219,26 @@ async function test_client() {
   console.log(nbProducts.json.data.length);
 }
 
+function uploadImageToBrand(id, path) {
+	var form = new FormData();
+	form.append('file', fs.createReadStream(path));
+	cez.brands.uploadImage(id, form)
+	.then((result) => {console.log(result);})
+	.catch(err => {console.log(err)});
+};
+
+async function createBrand(name) {
+  var id = await api.createBrand(name);
+  uploadImageToBrand(id,`./brands/${name}.jpg`);
+}
+
 async function initBrands() {
   await api.deleteAllBrands();
-  var t = await api.createBrand("Royal Canin");
-  console.log(JSON.stringify(t));
-  await api.createBrand("Purina");
+  await createBrand("Royal Canin");
+  await createBrand("Hills");
+  await createBrand("Proplan");
+  await createBrand("Spécific");
+  await createBrand("Virbac");
 }
 
 async function initStores() {
@@ -236,9 +254,8 @@ async function init() {
   await initBrands();
   //initStores();
   //logAttributes();
-  await test_client();
-
-  console.log(count());
+  //await test_client();
+  //console.log(count());
 }
-test_client();
-//init();
+//test_client();
+init();
