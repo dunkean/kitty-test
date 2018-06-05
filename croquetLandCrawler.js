@@ -8,6 +8,9 @@ var products = {};
 var slug = require('slugify');
 var html2json = require('html2json').html2json;
 var json2html = require('html2json').json2html;
+var base64 = require('base-64');
+
+var currentPage = 1;
 
 String.prototype.collapse = function () {
     return this.replace(/ +(?= )/g,'');
@@ -30,7 +33,10 @@ function productPage(error, result, $) {
         var name = slug(title);
         //products[name] = {};
         console.log(name);
+        if(!products.hasOwnProperty(name))
+          products[name] = {};
         //console.log(products[name] != null);
+        products[name].title = title;
         products[name].brand = $('meta[itemprop="brand"]').attr("content");
         products[name].short_description = $('.product-description .description').text().trim().collapse();
         products[name].race = $('[itemtype="http://schema.org/BreadcrumbList"]').children().eq(1).text().split('\n')[0].trim().collapse();
@@ -39,16 +45,24 @@ function productPage(error, result, $) {
         ).toArray().splice(1);
         products[name].breadcrumb = breadcrumb;
         products[name].type = breadcrumb[breadcrumb.length - 1];
-        products[name].img_url = $('.thumb-link img').attr("src");
-        products[name].conditionnement = $('.product-items .column.weight').map(
-          function(){return $(this).text();}
-        ).toArray();
-        var sections = $('.collateral-tabs span').map(function(){return $(this).text();}).toArray();
+        products[name].img75_url = $('.thumb-link img').attr("src");
+        products[name].img1980_url = $('.product-image-gallery').find('img').attr('src');
+        var productItems = $('.content-tableau-produit-desktop .product-items').map(
+          function(){
+            return {
+              weight: $(this).find('.column.weight').text().trim().collapse(),
+              price: $(this).find('.fullprice ').text().trim().collapse(),
+              weightprice: $(this).find('.weightprice').text().trim().collapse()
+            }
+          }
+          ).toArray();
+        products[name].conditionnement = productItems;
+        var sections = $('.collateral-tabs .tab span').map(function(){return $(this).text();}).toArray();
         var sectionsContent = $('.collateral-tabs .tab-content').map(function(){return $(this).html();}).toArray();
         var description = [];
         for(var i=0;i<sections.length;i++) {
           //console.log(sections[i]);
-          description.push({title:sections[i], content:html2json(sectionsContent[i])});
+          description.push({title:sections[i], content:base64.encode(sectionsContent[i])});
         }
         products[name].description = description;
         //console.log(JSON.stringify(description));
@@ -57,7 +71,7 @@ function productPage(error, result, $) {
 }
 
 async function saveProducts() {
-    fs.writeFile('./CroquetteLand_products.json', JSON.stringify(products, null, "  "), 'utf8', function(err){
+    fs.writeFile(`./CroquetteLand_products${currentProduct}.json`, JSON.stringify(products, null, "  "), 'utf8', function(err){
         console.log(err);
     });
 };
@@ -78,11 +92,11 @@ function productList(error, result, $) {
         img_produits.each(function (i, elem) {
             var name = $(this).children('.product-item-name').text().trim().collapse();
             var url = $(this).children('link').attr('content').trim();
-            var thumbnail_url = $(this).children('.product-image').children('img').attr('src').trim();
+            var img180_url = $(this).children('.product-image').children('img').attr('src').trim();
             products[slug(name)] = {
                 name: name,
                 url: url,
-                thumbnail_url: thumbnail_url
+                thumbnail_url: img180_url
             };
             //console.log(JSON.stringify(products[slug(name)]));
             //productCrawler.queue(url);
@@ -103,7 +117,18 @@ var productCrawler = new Crawler({
 
 productCrawler.on('drain',function(){
     saveProducts();
-    console.log("done scraping");
+    if(currentProduct < nbProducts-1) {
+      var i;
+      products = {};
+       for(i = currentProduct; i < Math.min(nbProducts, currentProduct+500); i++) {
+            var url = jsonProducts[keysProducts[i]].url;
+            products[keysProducts[i]] = jsonProducts[keysProducts[i]];
+            productCrawler.queue(url);
+        }
+        currentProduct = i;
+      } else {
+        console.log("done scraping");
+      }
 });
 
 listCrawler.on('drain',function(){
@@ -115,17 +140,30 @@ listCrawler.on('drain',function(){
 
 });
 
+var nbProducts;
+var currentProduct = 2500;
+var jsonProducts;
+var keysProducts;
+
+async function scrap() {
+  var i;
+   for(i = currentProduct; i < Math.min(nbProducts, currentProduct+500); i++) {
+        var url = jsonProducts[keysProducts[i]].url;
+        products[keysProducts[i]] = jsonProducts[keysProducts[i]];
+        productCrawler.queue(url);
+    }
+    currentProduct = i;
+}
+
 async function scrapProducts() {
   fs.readFile(require.resolve("./CroquetteLand_list.json"), (err, data) => {
     if (err)
       console.log(err);
     else {
-      var obj = JSON.parse(data);
-      var keys = Object.keys(obj);
-      for(var i = 0; i < keys.length; i++) {
-        var url = obj[keys[i]].url;
-        productCrawler.queue(url);
-      }
+      jsonProducts = JSON.parse(data);
+      keysProducts = Object.keys(jsonProducts);
+      nbProducts = keysProducts.length;
+      scrap();
     }
   })
 
@@ -145,6 +183,7 @@ function simpleLocalTest() {
   saveProducts();
 }
 
-scrapList();
+//scrapList();
+scrapProducts();
 //parseJson();
 //simpleLocalTest();

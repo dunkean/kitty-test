@@ -37,6 +37,7 @@
       "resolved": "https://registry.npmjs.org/aws4/-/aws4-1.7.0.tgz",
       "version": "1.7.0"
     },
+    "base-64": "^0.1.0",
     "bcrypt-pbkdf": {
       "integrity": "sha1-Y7xdy2EzG5K8Bf1SiVPDNGKgb40=",
       "optional": true,
