@@ -9,8 +9,9 @@ var slug = require('slugify');
 var html2json = require('html2json').html2json;
 var json2html = require('html2json').json2html;
 var base64 = require('base-64');
+var util = require('util');
 
-var currentPage = 1;
+const readFile = util.promisify(fs.readFile);
 
 String.prototype.collapse = function () {
     return this.replace(/ +(?= )/g,'');
@@ -141,7 +142,7 @@ listCrawler.on('drain',function(){
 });
 
 var nbProducts;
-var currentProduct = 2500;
+var currentProduct = 0;
 var jsonProducts;
 var keysProducts;
 
@@ -183,7 +184,30 @@ function simpleLocalTest() {
   saveProducts();
 }
 
+async function mergeJsons() {
+  var result = {};
+  for (var i = 1; i < 9; i++) {
+    try {
+      var data = await readFile(require.resolve(`./CrokLandProds (${i}).json`));
+      var json = JSON.parse(data);
+      var keys = Object.keys(json);
+      console.log(i + " " + keys.length);
+      for(var key of keys) {
+  //      console.log(key);
+//        result[key] = {};
+        result[key] = json[key];
+      }
+    }catch(e){
+      console.log(e);
+    }
+  }
+  fs.writeFile(`./CroquetteLand_products.json`, JSON.stringify(result, null, "  "), 'utf8', function(err){
+      console.log(err);
+  });
+}
+
+mergeJsons();
 //scrapList();
-scrapProducts();
+//scrapProducts();
 //parseJson();
 //simpleLocalTest();
