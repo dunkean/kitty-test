@@ -1,0 +1,4 @@
+set CHROME_PATH="C:/Progra~2/Google/Chrome/Application/chrome.exe"
+set NICKJS_LOAD_IMAGES=0
+set NICKJS_NO_SANDBOX=0
+

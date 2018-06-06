@@ -37,6 +37,9 @@
       "resolved": "https://registry.npmjs.org/aws4/-/aws4-1.7.0.tgz",
       "version": "1.7.0"
     },
+    "babel-cli": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
     "base-64": "^0.1.0",
     "bcrypt-pbkdf": {
       "integrity": "sha1-Y7xdy2EzG5K8Bf1SiVPDNGKgb40=",
@@ -47,11 +50,13 @@
       "resolved": "https://registry.npmjs.org/bcrypt-pbkdf/-/bcrypt-pbkdf-1.0.1.tgz",
       "version": "1.0.1"
     },
+    "bluebird": "^3.5.1",
     "caseless": {
       "integrity": "sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=",
       "resolved": "https://registry.npmjs.org/caseless/-/caseless-0.12.0.tgz",
       "version": "0.12.0"
     },
+    "casperjs": "^1.1.3",
     "cezerin-client": "^0.31.1",
     "cheerio-tableparser": "^1.0.1",
     "co": {
@@ -217,6 +222,7 @@
       "resolved": "https://registry.npmjs.org/mime-types/-/mime-types-2.1.18.tgz",
       "version": "2.1.18"
     },
+    "nickjs": "^0.3.6",
     "node-webcrawler": "^0.8.0",
     "oauth-sign": {
       "integrity": "sha1-Rqarfwrq2N6unsBWV4C31O/rnUM=",
@@ -228,6 +234,7 @@
       "resolved": "https://registry.npmjs.org/performance-now/-/performance-now-2.1.0.tgz",
       "version": "2.1.0"
     },
+    "phantomjs-prebuilt": "^2.1.14",
     "punycode": {
       "integrity": "sha1-wNWmOycYgArY4esPpSachN1BhF4=",
       "resolved": "https://registry.npmjs.org/punycode/-/punycode-1.4.1.tgz",
@@ -298,5 +305,10 @@
       "resolved": "https://registry.npmjs.org/verror/-/verror-1.10.0.tgz",
       "version": "1.10.0"
     }
-  }
+  },
+	"scripts": {
+	"build": "babel src -d lib",
+	"build:watch": "npm run build --watch",
+	"start": "\"node_modules\\casperjs\\bin\\casperjs\" lib\\zooplusbot.js"
+	}
 }
