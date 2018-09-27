@@ -156,6 +156,7 @@
       "resolved": "https://registry.npmjs.org/har-validator/-/har-validator-5.0.3.tgz",
       "version": "5.0.3"
     },
+    "html-entities": "^1.2.1",
     "html2json": "^1.0.2",
     "http-signature": {
       "integrity": "sha1-muzZJRFHcvPZW2WmCruPfBj7rOE=",
@@ -167,6 +168,8 @@
       "resolved": "https://registry.npmjs.org/http-signature/-/http-signature-1.2.0.tgz",
       "version": "1.2.0"
     },
+    "image-check": "^0.1.5",
+    "image-downloader": "^3.4.1",
     "is-typedarray": {
       "integrity": "sha1-5HnICFjfDBsR3dppQPlgEfzaSpo=",
       "resolved": "https://registry.npmjs.org/is-typedarray/-/is-typedarray-1.0.0.tgz",
@@ -222,6 +225,7 @@
       "resolved": "https://registry.npmjs.org/mime-types/-/mime-types-2.1.18.tgz",
       "version": "2.1.18"
     },
+    "move-file": "^1.0.0",
     "nickjs": "^0.3.6",
     "node-webcrawler": "^0.8.0",
     "oauth-sign": {
@@ -240,6 +244,7 @@
       "resolved": "https://registry.npmjs.org/punycode/-/punycode-1.4.1.tgz",
       "version": "1.4.1"
     },
+    "puppeteer": "^1.5.0",
     "qs": {
       "integrity": "sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==",
       "resolved": "https://registry.npmjs.org/qs/-/qs-6.5.2.tgz",
@@ -306,9 +311,9 @@
       "version": "1.10.0"
     }
   },
-	"scripts": {
-	"build": "babel src -d lib",
-	"build:watch": "npm run build --watch",
-	"start": "\"node_modules\\casperjs\\bin\\casperjs\" lib\\zooplusbot.js"
-	}
+  "scripts": {
+    "build": "babel src -d lib",
+    "build:watch": "npm run build --watch",
+    "start": "\"node_modules\\casperjs\\bin\\casperjs\" lib\\zooplusbot.js"
+  }
 }
